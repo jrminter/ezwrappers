@@ -18,8 +18,44 @@ plotting_tools: Convenience functions for plotting images and data
 0.0.960  2016-03-07  JRM  Added clip_img_hi
 0.0.965  2016-03-24  JRM  Added flag for colorbar to plotImage
 0.0.966  2016-03-26  JRM  Added interpolation to functions
+0.0.967  2017-03-31  JRM  Added makeRandomColorMap
 """
 # -*- coding: utf-8 -*-
+
+def makeRandomColorMap(minCol=0.125):
+    """makeRandomSegmentationColorMap()
+    
+    Make a random color for feature segmentation
+    
+    Inputs
+    ------
+    
+    minCol: float < 1.0 (0.125)
+        The minimum shade for the map
+    
+    Returns
+    -------
+    cmap: ListedColorMap
+        The Map
+    """
+    import matplotlib, numpy
+    # Make a random colormap for matplotlib
+    a = numpy.random.rand ( 256,3)
+    # set the first value to zero for the background
+    a[0][0] = 0.
+    a[0][1] = 0.
+    a[0][2] = 0.
+
+    for i in range(len(a)):
+        if (i > 0):
+            if a[i][0] < minCol:
+                a[i][0] += minCol
+            if a[i][1] < minCol:
+                a[i][1] += minCol
+            if a[i][2] < minCol:
+                a[i][2] += minCol
+    cmap = matplotlib.colors.ListedColormap(a) # numpy.random.rand ( 256,3))
+    return cmap
 
 def clip_img_hi(img, cut=10):
     """
